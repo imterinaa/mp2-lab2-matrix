@@ -100,35 +100,51 @@ ValType& TVector<ValType>::operator[](int pos)
 template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector &v) const
 {
+    if (Size != v.Size)
+        return false;
+    for (int i = 0; i < Size; i++)
+        if (pVector[i] == v.pVector[i])
+            return true;
+    return false;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator!=(const TVector &v) const
 {
-} /*-------------------------------------------------------------------------*/
 
-template <class ValType> // присваивание
+    if (Size != v.Size)
+        return true;
+    for (int i = 0; i < Size; i++)
+        if (pVector[i] != v.pVector[i])
+            return true;
+    return false;
+} /*-------------------------------------------------------------------------*/
+template <class ValType>
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
-    if (this == &v) {//&A - âçÿòèå àäðåñà
-		return (*this);//Âîçâðàùàåì îáúåêò, âûçîâ êîïèðîâàíèÿ íå áóäåò(âîçâðàò ïî ññûëêå)
-}
+    if (this != &v)
+    {
+        if (Size != v.Size)
+        {
+            delete[] pVector;
+            pVector = new ValType[v.Size];
 
-	if (Size != v.Size) {
-		Size = v.Size;
-		delete[] pVector;
-		pVector = new double[Size];
-	}
-
-	for (int i = 0; i < Size; i++) {
-		pVector[i] = v.pVector[i];
-	}return (*this);//Âîçâðà
-} /*-------------------------------------------------------------------------*/
+        }
+        Size = v.Size;
+        StartIndex = v.StartIndex;
+        for (int i = 0; i < Size; i++)
+            pVector[i] = v.pVector[i];
+    }
+    return *this;
+}*-------------------------------------------------------------------------*/
 
 template <class ValType> // прибавить скаляр
 TVector<ValType> TVector<ValType>::operator+(const ValType &val)
 {
-    for(int i=0;i<this->Size)
+   TVector res(*this);
+    for (int i = StartIndex ; i < Size; i++)
+        res.pVector[i] = pVector[i] + val;
+    return res;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычесть скаляр
